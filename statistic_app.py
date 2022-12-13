@@ -106,7 +106,7 @@ class Switch13(app_manager.RyuApp):
         
         if COUNTER == WINDOW_SIZE:
             RECORDS.append(HASH_TABLE)
-            f = open('log/attack_traffic_4.txt', 'a')
+            f = open('log/attack_traffic_5.txt', 'a')
             f.write(str(HASH_TABLE)+"\n")
             f.close()
             HASH_TABLE = {}
