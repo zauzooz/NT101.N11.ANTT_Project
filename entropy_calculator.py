@@ -48,7 +48,7 @@ if __name__=="__main__":
         TOTAL = []
     
     print("#### ATTACK TRAFFIC ####")
-    for i in range(0, 9):
+    for i in range(0, 10):
         analize(f"log/attack_traffic_{i}.txt")
         entropy_list = []
         for i in range(0, len(TOTAL)):
