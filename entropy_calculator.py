@@ -1,6 +1,5 @@
 from math import log2
 from fractions import Fraction
-import matplotlib.pyplot as plt
 import numpy as np
 
 NORMAL_TRAFFIC_LIST = []
@@ -42,23 +41,29 @@ def Shanon_Entropy(capture, total):
 
 
 if __name__=="__main__":
-    i = 1 # 0 <= i <= 9
-    j = 2 # 0 <= j <= 9
-    (nor_flows, _) = analize(f'./log/normal_traffic_{i}.txt')
-    (atk_flows, _) = analize(f'./log/attack_traffic_{j}.txt')
-    normal_entroy = []
-    attack_entropy = []
-    for flow in nor_flows:
-        normal_entroy.append(Shanon_Entropy(flow, MAX_N))
-    for flow in atk_flows:
-        attack_entropy.append(Shanon_Entropy(flow, MAX_N))
-    X = [i for i in range(1, len(nor_flows)+1)]
-    y_nor_points = np.array(normal_entroy)
-    x_nor_points = np.array([i for i in range(1, len(nor_flows)+1)])
+    LIST = [i for i in range(0, 10)]
+    for i in LIST:
+        for j in LIST:
+            import matplotlib.pyplot as plt
+            (nor_flows, _) = analize(f'./log/normal_traffic_{i}.txt')
+            (atk_flows, _) = analize(f'./log/attack_traffic_{j}.txt')
+            normal_entroy = []
+            attack_entropy = []
+            for flow in nor_flows:
+                normal_entroy.append(Shanon_Entropy(flow, MAX_N))
+            for flow in atk_flows:
+                attack_entropy.append(Shanon_Entropy(flow, MAX_N))
+            X = [i for i in range(1, len(nor_flows)+1)]
+            y_nor_points = np.array(normal_entroy)
+            x_nor_points = np.array([f'{i}' for i in range(1, len(nor_flows)+1)])
 
-    y_atk_points = np.array(attack_entropy[0:len(nor_flows)])
-    x_atk_points = np.array([i for i in range(1, len(nor_flows)+1)])
+            y_atk_points = np.array(attack_entropy[0:len(nor_flows)])
+            x_atk_points = np.array([f'{i}' for i in range(1, len(nor_flows)+1)])
 
-    plt.plot(x_nor_points, y_nor_points, color = 'green')
-    plt.plot(x_atk_points, y_atk_points, color = 'red')
-    plt.show()
+            plt.plot(x_nor_points, y_nor_points, color = 'green')
+            plt.plot(x_atk_points, y_atk_points, color = 'red')
+            plt.grid()
+            manager = plt.get_current_fig_manager()
+            manager.resize(*manager.window.maxsize())
+            plt.savefig(f"./img/nor{i}_vs_atk{j}.png")
+            plt.clf() # clear
