@@ -59,6 +59,6 @@ if __name__=="__main__":
     y_atk_points = np.array(attack_entropy[0:len(nor_flows)])
     x_atk_points = np.array([i for i in range(1, len(nor_flows)+1)])
 
-    plt.plot(x_nor_points, y_nor_points)
-    plt.plot(x_atk_points, y_atk_points)
+    plt.plot(x_nor_points, y_nor_points, color = 'green')
+    plt.plot(x_atk_points, y_atk_points, color = 'red')
     plt.show()
