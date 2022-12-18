@@ -38,9 +38,8 @@ def Shanon_Entropy(capture, total):
         entropy += -1*proba*log2(proba)
     return entropy
 
-
-
-if __name__=="__main__":
+# create plot img
+def create_img():
     LIST = [i for i in range(0, 10)]
     for i in LIST:
         for j in LIST:
@@ -67,3 +66,6 @@ if __name__=="__main__":
             manager.resize(*manager.window.maxsize())
             plt.savefig(f"./img/nor{i}_vs_atk{j}.png")
             plt.clf() # clear
+
+if __name__=="__main__":
+    pass
