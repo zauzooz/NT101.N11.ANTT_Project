@@ -1,9 +1,14 @@
 from math import log2
 from fractions import Fraction
+import matplotlib.pyplot as plt
+import numpy as np
 
-DISTRIBUTION = [] # each line in log.txt is a item, this item is a list.
-TOTAL = []        # total number of packet is captured in each item in DISTRIBUTION.
-NORMAL_LOGS = []
+NORMAL_TRAFFIC_LIST = []
+NORMAL_TRAFFIC_ENTROPY = []
+ATTACK_TRAFFIC_LIST = []
+ATTACK_TRAFFIC_ENTROPY = []
+
+MAX_N = 10
 
 def mean(list):
     S = 0
@@ -13,21 +18,19 @@ def mean(list):
     return S/N 
 
 def analize(link):
-    global DISTRIBUTION
-    global TOTAL
+    FLOWS = []
+    TOTAL = []
     f = open(link, 'r')
     lines = f.readlines()
     f.close()
     for line in lines:
         capture = eval(line)
-        DISTRIBUTION.append(capture)
+        FLOWS.append(capture)
         S = 0
         for key in capture:
             S += capture[key]
         TOTAL.append(S)
-
-def generalized_Entropy(alpha):
-    pass
+    return (FLOWS, TOTAL)
 
 def Shanon_Entropy(capture, total):
     entropy = 0
@@ -36,23 +39,26 @@ def Shanon_Entropy(capture, total):
         entropy += -1*proba*log2(proba)
     return entropy
 
+
+
 if __name__=="__main__":
-    print("#### NORMAL TRAFFIC ####")
-    for i in range(0, 10):
-        analize(f"log/normal_traffic_{i}.txt")
-        entropy_list = []
-        for i in range(0, len(TOTAL)):
-            entropy_list.append(Shanon_Entropy(DISTRIBUTION[i], TOTAL[i]))
-        print(mean(entropy_list))
-        DISTRIBUTION = []
-        TOTAL = []
-    
-    print("#### ATTACK TRAFFIC ####")
-    for i in range(0, 10):
-        analize(f"log/attack_traffic_{i}.txt")
-        entropy_list = []
-        for i in range(0, len(TOTAL)):
-            entropy_list.append(Shanon_Entropy(DISTRIBUTION[i], TOTAL[i]))
-        print(mean(entropy_list))
-        DISTRIBUTION = []
-        TOTAL = []
+    i = 1 # 0 <= i <= 9
+    j = 2 # 0 <= j <= 9
+    (nor_flows, _) = analize(f'./log/normal_traffic_{i}.txt')
+    (atk_flows, _) = analize(f'./log/attack_traffic_{j}.txt')
+    normal_entroy = []
+    attack_entropy = []
+    for flow in nor_flows:
+        normal_entroy.append(Shanon_Entropy(flow, MAX_N))
+    for flow in atk_flows:
+        attack_entropy.append(Shanon_Entropy(flow, MAX_N))
+    X = [i for i in range(1, len(nor_flows)+1)]
+    y_nor_points = np.array(normal_entroy)
+    x_nor_points = np.array([i for i in range(1, len(nor_flows)+1)])
+
+    y_atk_points = np.array(attack_entropy[0:len(nor_flows)])
+    x_atk_points = np.array([i for i in range(1, len(nor_flows)+1)])
+
+    plt.plot(x_nor_points, y_nor_points)
+    plt.plot(x_atk_points, y_atk_points)
+    plt.show()
