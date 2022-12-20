@@ -187,7 +187,7 @@ def return_distance_list(nor_list, atk_list):
     for i in x:
         for j in x:
             for t in range(0, len(nor_list)):
-                distance_list.append(abs(nor_list[i][t] - atk_list[j][t]))
+                distance_list.append(abs(nor_list[i][t] - atk_list[j][t])) # 
     return distance_list
 
 def rand_a_float_between_2_floats(min, max):
@@ -211,7 +211,8 @@ def set_threshold_1():
 def set_threshold_2():
     threshold2 = confident_interval(return_distance_list(NORMAL_TRAFFIC_ENTROPY, ATTACK_TRAFFIC_ENTROPY))
     global THRESHOLD_2
-    THRESHOLD_2 = rand_a_float_between_2_floats(threshold2[0], threshold2[1])
+    t = 3.6
+    THRESHOLD_2 = rand_a_float_between_2_floats(threshold2[0]/t, threshold2[1]/t)
     print(THRESHOLD_2)
     return threshold2
 

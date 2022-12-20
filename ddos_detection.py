@@ -17,13 +17,19 @@ WINDOW_SIZE = 10
 COUNTER = 0
 I = 0
 ALERT_COUNTER = 0
-STANDARD_NORMAL_TRAFFIC = pickle.load('./value_setting/standart_normal_traffic.pkl')
-THRESHOLD_1 = pickle.load('./value_setting/threshold1.pkl')
-THRESHOLD_2 = pickle.load('./value_setting/threshold2.pkl')
+STANDARD_NORMAL_TRAFFIC = 0
+THRESHOLD_1 = 0
+THRESHOLD_2 = 0
 
-# THRESHOLD_1=1.070907926513757
-# THRESHOLD_2=0.6382744025394036
-# STANDARD_NORMAL_TRAFFIC=[0.6515550195600632, 0.5249001582967918, 0.561533313148384, 0.13929057462790978, 1.5229352167401133, 1.3147547655313476, 1.2710661227219147, 1.465342190882962, 1.881773382340798, 1.3774352247834831]
+with open('./value_setting/standard_normal_traffic.pkl', 'rb') as f:
+    STANDARD_NORMAL_TRAFFIC = pickle.load(f)
+threhold_1 = 0
+with open('./value_setting/threshold1.pkl', 'rb') as f:
+    THRESHOLD_1 = pickle.load(f)
+threhold_2 = 0
+with open('./value_setting/threshold2.pkl', 'rb') as f:
+    THRESHOLD_2 = pickle.load(f)
+
 
 class Switch13(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
