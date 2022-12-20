@@ -22,7 +22,7 @@
 - `attack_topoloty.py`: SDN topology of our project - attack traffic.
 - `upd_normal.py`: send a normal UDP packet to the victim.
 - `udp_spoof.py`: send a spoofing UDP packet to the victim.
-- `entropy_calculator.py`: calculate entropy depends on `log.txt` file.
+- `parameter_setting.py`: set the parameter for DDoS detection scheme.
 - `ddos_deticiton.py`: SDN application of our project. It uses to detect DDoS attack.
 - *Update later...*
 

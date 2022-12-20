@@ -3,10 +3,11 @@ from fractions import Fraction
 import numpy as np
 import matplotlib.pyplot as plt
 
-NORMAL_TRAFFIC_LIST = []
 NORMAL_TRAFFIC_ENTROPY = []
-ATTACK_TRAFFIC_LIST = []
 ATTACK_TRAFFIC_ENTROPY = []
+STANDARD_NORMAL_TRAFFIC = []
+THRESHOLD_1 = 0
+THRESHOLD_2 = 0
 
 MAX_N = 10
 
@@ -33,11 +34,15 @@ def confident_interval(list):
     n_size = len(list)
     one_tailed_prob = (1 - confident_level)/2
     degrees_of_freedom = n_size - 1
-    import scipy.stats    
-    t_value = scipy.stats.t.ppf(q=1-one_tailed_prob, df=degrees_of_freedom)
+    import scipy.stats
+    z = 0
+    if n_size < 30:    
+        z = scipy.stats.t.ppf(q=1-one_tailed_prob, df=degrees_of_freedom)
+    else:
+        z = scipy.stats.norm.ppf(confident_level) # normal distribution, when n_size > 30
     from math import sqrt
-    CI_max = the_mean + t_value * standart_deriation(list, the_mean)/sqrt(n_size)
-    CI_min = the_mean - t_value * standart_deriation(list, the_mean)/sqrt(n_size)
+    CI_max = the_mean + z * standart_deriation(list, the_mean)/sqrt(n_size)
+    CI_min = the_mean - z * standart_deriation(list, the_mean)/sqrt(n_size)
     CI = CI_max - CI_min
     return (CI_min, CI_max, CI)
 
@@ -185,16 +190,67 @@ def return_distance_list(nor_list, atk_list):
                 distance_list.append(abs(nor_list[i][t] - atk_list[j][t]))
     return distance_list
 
-def show_threshold_1_setting():
+def rand_a_float_between_2_floats(min, max):
+    import random
+    return random.uniform(min, max)
+
+def set_threshold_1():
+    global THRESHOLD_1
     x = [i for i in range(0, 10)]
+    threshold1 = []
     for i in x:
         for j in x:
-            print(f"nor{i} vs atk{j}: " + str(threshold_1_setting(nor_list=NORMAL_TRAFFIC_ENTROPY[i],
-                            atk_list=ATTACK_TRAFFIC_ENTROPY[j][0:len(NORMAL_TRAFFIC_ENTROPY[i])])))
+            threshold = threshold_1_setting(nor_list=NORMAL_TRAFFIC_ENTROPY[i],
+                            atk_list=ATTACK_TRAFFIC_ENTROPY[j][0:len(NORMAL_TRAFFIC_ENTROPY[i])])
+            threshold1.append(threshold)    
+    threshold1 = confident_interval(threshold1)
+    THRESHOLD_1 = rand_a_float_between_2_floats(threshold1[0], threshold1[1])
+    return threshold1
+
+def set_threshold_2():
+    threshold2 = confident_interval(return_distance_list(NORMAL_TRAFFIC_ENTROPY, ATTACK_TRAFFIC_ENTROPY))
+    global THRESHOLD_2
+    THRESHOLD_2 = rand_a_float_between_2_floats(threshold2[0], threshold2[1])
+    return threshold2
+
+def set_standart_normal_traffic():
+    global STANDARD_NORMAL_TRAFFIC
+    normal_standard_traffic = []
+    for i in range(0, 10):
+        list = []
+        for j in range(0, 10):
+            try:
+                list.append(NORMAL_TRAFFIC_ENTROPY[j][i])
+            except:
+                print(f'{j}_{i}')
+                return
+        nor = confident_interval(list)
+        normal_standard_traffic.append(rand_a_float_between_2_floats(nor[0], nor[1]))
+    STANDARD_NORMAL_TRAFFIC = normal_standard_traffic
+    return normal_standard_traffic
 
 
-def show_threshold_2_setting():
-    print(confident_interval(return_distance_list(NORMAL_TRAFFIC_ENTROPY, ATTACK_TRAFFIC_ENTROPY)))
+def parameter_setting():
+    set_threshold_1()
+    set_threshold_2()
+    set_standart_normal_traffic()
+    import pickle
+    with open('./value_setting/threshold1.pkl', 'wb') as f:
+        pickle.dump(THRESHOLD_1, f)
+    with open('./value_setting/threshold2.pkl', 'wb') as f:
+        pickle.dump(THRESHOLD_2, f)
+    with open('./value_setting/standart_normal_traffic.pkl', 'wb') as f:
+        pickle.dump(STANDARD_NORMAL_TRAFFIC, f)
+
+def load_values():
+    import pickle
+    with open('./value_setting/threshold1.pkl', 'rb') as f:
+        print(pickle.load(f))
+    with open('./value_setting/threshold2.pkl', 'rb') as f:
+        print(pickle.load(f))
+    with open('./value_setting/standart_normal_traffic.pkl', 'rb') as f:
+        print(pickle.load(f))
 
 if __name__=="__main__":
     init_entropy_value()
+    parameter_setting()
