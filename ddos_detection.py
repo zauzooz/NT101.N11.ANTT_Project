@@ -17,16 +17,16 @@ WINDOW_SIZE = 10
 COUNTER = 0
 I = 0
 ALERT_COUNTER = 0
-STANDARD_NORMAL_TRAFFIC = 0
+STANDARD_NORMAL_TRAFFIC = []
 THRESHOLD_1 = 0
 THRESHOLD_2 = 0
 
 with open('./value_setting/standard_normal_traffic.pkl', 'rb') as f:
     STANDARD_NORMAL_TRAFFIC = pickle.load(f)
-threhold_1 = 0
+
 with open('./value_setting/threshold1.pkl', 'rb') as f:
     THRESHOLD_1 = pickle.load(f)
-threhold_2 = 0
+
 with open('./value_setting/threshold2.pkl', 'rb') as f:
     THRESHOLD_2 = pickle.load(f)
 
@@ -77,19 +77,20 @@ class Switch13(app_manager.RyuApp):
     def detect_ddos_attack(self, record):
         global ALERT_COUNTER
         global I
-        try:
-            h = self.Shanon_Entropy(record)
-            id = abs(STANDARD_NORMAL_TRAFFIC[I] -  h)
-            if id >= THRESHOLD_2 and h <= THRESHOLD_1:
-                ALERT_COUNTER = ALERT_COUNTER + 1
-                if ALERT_COUNTER == 3:
-                    self.logger.info("-------------------- DDOS ATTACK IS DETECTED --------------------")
-                    exit(0)
-            else:
-                ALERT_COUNTER = 0
-            I = I + 1
-        except:
-            pass
+        if I >= len(STANDARD_NORMAL_TRAFFIC):
+            return
+
+        h = self.Shanon_Entropy(record)
+        id = abs(STANDARD_NORMAL_TRAFFIC[I] -  h)
+        if id >= THRESHOLD_2 and h <= THRESHOLD_1:
+            ALERT_COUNTER = ALERT_COUNTER + 1
+            if ALERT_COUNTER == 3:
+                self.logger.info("DDOS ATTACK IS DETECTED!!!")
+                exit(0)
+        else:
+            ALERT_COUNTER = 0
+        I = I + 1
+        self.logger.info("----------NORMAL----------")
 
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
@@ -123,7 +124,7 @@ class Switch13(app_manager.RyuApp):
         dpid = format(datapath.id, "d").zfill(16)
         self.mac_to_port.setdefault(dpid, {})
 
-        self.logger.info("packet in %s %s %s %s", dpid, mac_src, mac_dst, in_port)
+        # self.logger.info("packet in %s %s %s %s", dpid, mac_src, mac_dst, in_port)
 
         # learn a mac address to avoid FLOOD next time.
         self.mac_to_port[dpid][mac_src] = in_port
