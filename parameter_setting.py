@@ -205,12 +205,14 @@ def set_threshold_1():
             threshold1.append(threshold)    
     threshold1 = confident_interval(threshold1)
     THRESHOLD_1 = rand_a_float_between_2_floats(threshold1[0], threshold1[1])
+    print(THRESHOLD_1)
     return threshold1
 
 def set_threshold_2():
     threshold2 = confident_interval(return_distance_list(NORMAL_TRAFFIC_ENTROPY, ATTACK_TRAFFIC_ENTROPY))
     global THRESHOLD_2
     THRESHOLD_2 = rand_a_float_between_2_floats(threshold2[0], threshold2[1])
+    print(THRESHOLD_2)
     return threshold2
 
 def set_standart_normal_traffic():
@@ -227,6 +229,7 @@ def set_standart_normal_traffic():
         nor = confident_interval(list)
         normal_standard_traffic.append(rand_a_float_between_2_floats(nor[0], nor[1]))
     STANDARD_NORMAL_TRAFFIC = normal_standard_traffic
+    print(STANDARD_NORMAL_TRAFFIC)
     return normal_standard_traffic
 
 
