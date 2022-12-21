@@ -252,7 +252,7 @@ def load_values():
         print(pickle.load(f))
     with open('./value_setting/threshold2.pkl', 'rb') as f:
         print(pickle.load(f))
-    with open('./value_setting/standart_normal_traffic.pkl', 'rb') as f:
+    with open('./value_setting/standard_normal_traffic.pkl', 'rb') as f:
         print(pickle.load(f))
 
 if __name__=="__main__":

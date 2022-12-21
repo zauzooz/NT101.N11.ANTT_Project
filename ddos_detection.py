@@ -147,9 +147,9 @@ class Switch13(app_manager.RyuApp):
         
         if COUNTER == WINDOW_SIZE:
             RECORDS.append(HASH_TABLE)
-            f = open('./test_log/log_3.txt', 'a')
-            f.write(str(HASH_TABLE)+"\n")
-            f.close()
+            # f = open('./test_log/log_3.txt', 'a')
+            # f.write(str(HASH_TABLE)+"\n")
+            # f.close()
             self.detect_ddos_attack(HASH_TABLE)
             HASH_TABLE = {}
             COUNTER = 0
