@@ -15,6 +15,6 @@ def server_run():
 if __name__=="__main__":
     p = multiprocessing.Process(target=server_run)
     p.start()
-    p.join(40)
+    p.join(50)
     if p.is_alive():
         p.terminate()

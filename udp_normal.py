@@ -15,6 +15,6 @@ def client_handler():
 if __name__=="__main__":
     p = multiprocessing.Process(target=client_handler)
     p.start()
-    p.join(15)
+    p.join(30)
     if p.is_alive():
         p.terminate()
