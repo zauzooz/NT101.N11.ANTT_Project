@@ -1,5 +1,5 @@
 import socket
-
+import os
 BUFFER_SIZE = 1024
 
 udpServer = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
@@ -11,5 +11,5 @@ PACKET_NUM = 0
 while(PACKET_NUM < 50*15):
     PACKET_NUM += 1
     msg_rcv, addr = udpServer.recvfrom(BUFFER_SIZE)
-    print(f"from {addr}: " + msg_rcv.decode("utf-8"))
+    # print(f"from {addr}: " + msg_rcv.decode("utf-8"))
     udpServer.sendto(msg_rcv, addr)

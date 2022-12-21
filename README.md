@@ -18,17 +18,17 @@
 ## Description
 
 - `statistic_app.py`: SDN application of our project. It uses to statistic the destination IP address comes to the controller.
+- `ddos_deticiton.py`: SDN application of our project. It uses to detect DDoS attack.
 - `normal_topology.py`: SDN topology of our project - normal traffic.
 - `attack_topoloty.py`: SDN topology of our project - attack traffic.
+- `udp_server.py`: a UDP server.
 - `upd_normal.py`: send a normal UDP packet to the victim.
 - `udp_spoof.py`: send a spoofing UDP packet to the victim.
 - `parameter_setting.py`: set the parameter for DDoS detection scheme.
-- `ddos_deticiton.py`: SDN application of our project. It uses to detect DDoS attack.
-- *Update later...*
+- `evaluation_metrics.py`: evaluation metrics
 
 ## Requirements
 
 - OS: Ubuntu 20.04 LTS
 - Use Containernet (https://github.com/containernet/containernet) to build a SDN topology.
 - Use Ryu (https://github.com/faucetsdn/ryu) to write SDN application.
-- *Update later...*

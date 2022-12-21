@@ -65,7 +65,7 @@ class Switch13(app_manager.RyuApp):
                                     match=match, instructions=inst)
         datapath.send_msg(mod)
     
-    def Shanon_Entropy(capture):
+    def Shanon_Entropy(self, capture):
         from fractions import Fraction
         from math import log2
         entropy = 0
@@ -84,13 +84,14 @@ class Switch13(app_manager.RyuApp):
         id = abs(STANDARD_NORMAL_TRAFFIC[I] -  h)
         if id >= THRESHOLD_2 and h <= THRESHOLD_1:
             ALERT_COUNTER = ALERT_COUNTER + 1
-            if ALERT_COUNTER == 3:
+            if ALERT_COUNTER >= 3:
                 self.logger.info("DDOS ATTACK IS DETECTED!!!")
-                exit(0)
+                return
         else:
             ALERT_COUNTER = 0
         I = I + 1
         self.logger.info("----------NORMAL----------")
+        return
 
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
@@ -146,6 +147,9 @@ class Switch13(app_manager.RyuApp):
         
         if COUNTER == WINDOW_SIZE:
             RECORDS.append(HASH_TABLE)
+            f = open('./test_log/log_3.txt', 'a')
+            f.write(str(HASH_TABLE)+"\n")
+            f.close()
             self.detect_ddos_attack(HASH_TABLE)
             HASH_TABLE = {}
             COUNTER = 0
