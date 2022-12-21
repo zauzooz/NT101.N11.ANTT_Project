@@ -64,9 +64,9 @@ if __name__=="__main__":
 
     # start network
     net.start()
-    start_new_thread(hostRunCMD, (h11,"nc -w 750 -lup 9696",))
+    start_new_thread(hostRunCMD, (h11,"python3 udp_normal.py",))
     from time import sleep
-    sleep(0.5)
+    sleep(1)
     start_new_thread(hostRunCMD, (h1,"python3 udp_normal.py",))
     start_new_thread(hostRunCMD, (h2,"python3 udp_normal.py",))
     start_new_thread(hostRunCMD, (h3,"python3 udp_normal.py",))
