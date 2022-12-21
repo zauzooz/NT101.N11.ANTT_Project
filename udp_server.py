@@ -1,5 +1,4 @@
 import socket
-import os
 BUFFER_SIZE = 1024
 
 udpServer = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
