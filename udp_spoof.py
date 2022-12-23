@@ -13,6 +13,6 @@ def spoof_handler():
 if __name__ == "__main__":
     p = multiprocessing.Process(target=spoof_handler)
     p.start()
-    p.join(15)
+    p.join(25)
     if p.is_alive():
         p.terminate()
