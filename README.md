@@ -35,7 +35,7 @@ Các thành viên:
 
 ## Cách chạy dự án
 
-Bước 1: đảm bảo phải cài đặt Containernet và Ryu như đã đề cập ở trên.
+Bước 1: Đảm bảo phải cài đặt Containernet và Ryu như đã đề cập ở trên.
 
 Bước 2: Clone dự án về
 
